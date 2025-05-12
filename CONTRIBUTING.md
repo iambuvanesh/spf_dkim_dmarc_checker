@@ -16,11 +16,14 @@ Thank you for your interest in contributing to this project! Whether it's fixing
    cd spf_dkim_dmarc_checker
 ````
 
+---
+
 3. **Create a New Branch**
 
    ```bash
    git checkout -b feature/your-feature-name
    ```
+---
 
 4. **Make Your Changes**
 
@@ -38,6 +41,8 @@ Thank you for your interest in contributing to this project! Whether it's fixing
    git commit -m "Add your feature description"
    git push origin feature/your-feature-name
    ```
+
+---
 
 7. **Create a Pull Request**
 
