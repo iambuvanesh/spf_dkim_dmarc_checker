@@ -10,6 +10,7 @@ Thank you for your interest in contributing to this project! Whether it's fixing
    - Click the **Fork** button on the top right of this repo.
 
 2. **Clone Your Fork**
+   
    ```bash
    git clone https://github.com/iambuvanesh/spf_dkim_dmarc_checker.git
    cd spf_dkim_dmarc_checker
