@@ -32,12 +32,16 @@ chmod +x spf_dkim_dmarc_checker.sh
 
 **Example:**
 
+* **Scan a single domain:**
+
+```bash
+./spf_dkim_dmarc_checker.sh example.com default
+```
+
+* **Scan multiple domains from a file:**
+
 ```bash
 ./spf_dkim_dmarc_checker.sh domains.txt default
-
-(or)
-
-bash spf_dkim_dmarc_checker.sh domains.txt default
 ```
 
 * `domain_list.txt`: A file with one domain per line.
