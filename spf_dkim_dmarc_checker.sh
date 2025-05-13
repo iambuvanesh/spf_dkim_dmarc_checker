@@ -1,26 +1,17 @@
 #!/bin/bash
 
-# Multi-domain SPF, DKIM, and DMARC Checker
+# Multi-domain or single-domain SPF, DKIM, and DMARC Checker
 
-if [ $# -ne 2 ]; then
-  echo "Usage: $0 <domain_list.txt> <dkim_selector>"
-  echo "Example: $0 domains.txt default"
+print_usage() {
+  echo "Usage:"
+  echo "  $0 domain_list.txt <dkim_selector>    # Scan multiple domains from a file"
+  echo "  $0 example.com <dkim_selector>        # Scan a single domain"
   exit 1
-fi
+}
 
-domain_list=$1
-selector=$2
-
-if [ ! -f "$domain_list" ]; then
-  echo "File not found: $domain_list"
-  exit 1
-fi
-
-echo "Starting SPF, DKIM, and DMARC scan for domains in: $domain_list"
-echo "==============================================================="
-
-while read -r domain; do
-  [ -z "$domain" ] && continue  # Skip empty lines
+scan_domain() {
+  local domain=$1
+  local selector=$2
 
   echo ""
   echo "Domain: $domain"
@@ -40,9 +31,7 @@ while read -r domain; do
     echo "[-] No SPF Record found."
   fi
 
-
   echo ""
-
 
   # === DKIM Check ===
   dkim_record=$(dig +short TXT "$selector._domainkey.$domain")
@@ -58,9 +47,7 @@ while read -r domain; do
     echo "[-] No DKIM record found for selector $selector."
   fi
 
-
   echo ""
-
 
   # === DMARC Check ===
   dmarc_record=$(dig +short TXT _dmarc."$domain" | grep "v=DMARC1")
@@ -78,11 +65,29 @@ while read -r domain; do
     echo "[-] No DMARC Record found."
   fi
 
-
   echo "-------------------------------------------"
+}
 
+# Entry Point
+if [ $# -ne 2 ]; then
+  print_usage
+fi
 
-done < "$domain_list"
+input=$1
+selector=$2
+
+if [[ -f "$input" ]]; then
+  echo "Starting SPF, DKIM, and DMARC scan for domains in: $input"
+  echo "==============================================================="
+  while read -r domain; do
+    [ -z "$domain" ] && continue
+    scan_domain "$domain" "$selector"
+  done < "$input"
+else
+  echo "Starting SPF, DKIM, and DMARC scan for single domain: $input"
+  echo "==============================================================="
+  scan_domain "$input" "$selector"
+fi
 
 echo ""
 echo "Scan completed."
